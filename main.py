@@ -1,13 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.orm import Session
+from database import get_db, engine
+import sql_models
 from models import MsgPayload
 
-app = FastAPI()
+# Create all tables in the database
+sql_models.Base.metadata.create_all(bind=engine)
+
+app = FastAPI(title="SchoolSphere API")
 messages_list: dict[int, MsgPayload] = {}
 
 
 @app.get("/")
-def root() -> dict[str, str]:
-    return {"message": "Hello"}
+def read_root():
+    return {"message": "Welcome to SchoolSphere API"}
 
 
 # About page route
