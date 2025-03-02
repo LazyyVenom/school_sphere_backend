@@ -1,4 +1,8 @@
-fastapi
-uvicorn
-sqlalchemy
-httpx
+fastapi>=0.68.0
+uvicorn>=0.15.0
+sqlalchemy>=1.4.23
+pymysql>=1.0.2
+cryptography>=35.0.0
+pydantic>=1.8.0
+# If you want to switch to MySQL later:
+# pymysql>=1.0.2

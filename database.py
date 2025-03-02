@@ -2,8 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# You can replace this URL with your actual database URL
-SQLALCHEMY_DATABASE_URL = "mysql://user:password@localhost/school_sphere"
+# MySQL connection string for XAMPP
+# Default XAMPP MySQL credentials: username="root", password="" (empty)
+# You can adjust these values as needed
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:@localhost:3306/school_sphere"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
@@ -12,7 +14,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:
