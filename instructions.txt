@@ -1,0 +1,5 @@
+I am working on a Flutter based front end FastAPI based backend and
+MySQL server based database
+
+My goal is too create a application for school management system so do work
+accordingly
