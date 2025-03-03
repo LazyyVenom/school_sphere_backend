@@ -128,6 +128,27 @@ class Student(BaseModel):
             raise ValueError('Phone number must be 10 digits')
         return v
 
+# StudentCreate model for creating new students without auto-generated fields
+class StudentCreate(BaseModel):
+    name: str
+    class_id: str
+    roll_no: int
+    gender: Gender
+    phone: int
+    email: str
+    status: StudentStatus = StudentStatus.ACTIVE
+    profile_pic: Optional[str] = None
+    address: str
+    password: str
+    date_of_birth: date
+    
+    @field_validator('phone')
+    @classmethod
+    def validate_phone(cls, v):
+        if not (1000000000 <= v <= 9999999999):
+            raise ValueError('Phone number must be 10 digits')
+        return v
+
 # Admin model
 class Admin(BaseModel):
     admin_id: str = Field(..., description="Unique identifier for the admin")
