@@ -40,17 +40,14 @@ def create_student(student: StudentCreate, db: Session = Depends(get_db)):
     """
     Create a new student in the database
     """
-    # Check if email already exists
     db_student = db.query(sql_models.Student).filter(sql_models.Student.email == student.email).first()
     if db_student:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    # Check if class exists
     class_check = db.query(sql_models.Class).filter(sql_models.Class.class_id == student.class_id).first()
     if not class_check:
         raise HTTPException(status_code=404, detail="Class not found")
     
-    # Check if roll number already exists in the same class
     roll_check = db.query(sql_models.Student).filter(
         sql_models.Student.class_id == student.class_id,
         sql_models.Student.roll_no == student.roll_no
@@ -58,7 +55,6 @@ def create_student(student: StudentCreate, db: Session = Depends(get_db)):
     if roll_check:
         raise HTTPException(status_code=400, detail="Roll number already exists in this class")
     
-    # Create new student object
     new_student = sql_models.Student(
         student_id=str(uuid.uuid4()),
         name=student.name,
@@ -74,7 +70,6 @@ def create_student(student: StudentCreate, db: Session = Depends(get_db)):
         date_of_birth=student.date_of_birth
     )
     
-    # Add to database
     try:
         db.add(new_student)
         db.commit()
@@ -83,3 +78,4 @@ def create_student(student: StudentCreate, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to create student: {str(e)}")
+

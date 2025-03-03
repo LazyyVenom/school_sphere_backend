@@ -273,19 +273,26 @@ class Notification(BaseModel):
     
     @field_validator('class_id')
     @classmethod
-    def validate_class_id(cls, v, values):
-        if 'recipient' in values.data and values.data['recipient'] == RecipientType.SPECIFIC_CLASS and v is None:
+    def validate_class_id(cls, v, info):
+        values = info.data
+        if 'recipient' in values and values['recipient'] == RecipientType.SPECIFIC_CLASS and v is None:
             raise ValueError('Class ID is required when recipient is Specific Class')
         return v
     
-    @field_validator('admin_id', 'teacher_id')
+    @field_validator('admin_id')
     @classmethod
-    def validate_creator_ids(cls, v, values, field):
-        if 'creator_type' in values.data:
-            if values.data['creator_type'] == CreatorType.ADMIN and field.name == 'admin_id' and v is None:
-                raise ValueError('Admin ID is required when creator is Admin')
-            elif values.data['creator_type'] == CreatorType.TEACHER and field.name == 'teacher_id' and v is None:
-                raise ValueError('Teacher ID is required when creator is Teacher')
+    def validate_admin_id(cls, v, info):
+        values = info.data
+        if 'creator_type' in values and values['creator_type'] == CreatorType.ADMIN and v is None:
+            raise ValueError('Admin ID is required when creator is Admin')
+        return v
+    
+    @field_validator('teacher_id')
+    @classmethod
+    def validate_teacher_id(cls, v, info):
+        values = info.data
+        if 'creator_type' in values and values['creator_type'] == CreatorType.TEACHER and v is None:
+            raise ValueError('Teacher ID is required when creator is Teacher')
         return v
 
 # Leave_Application model
